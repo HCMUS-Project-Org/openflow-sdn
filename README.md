@@ -57,11 +57,13 @@
 This project with aim to learn **SDN** using `Linear topology` with **`OpenFlow`**
 
 > **Linear topology:** each switch has one host
-> ![Linear topology](assets/linear-topo.png)
+>
+> <img alt="Linear topology" src="assets/linear-topo.png" width="450px">
 
 ## Prerequisites
 
-Virtualbox: `>= v6.1.0`, download [here](https://www.virtualbox.org/wiki/Downloads)
+- **SSHPass**: install instruction [here](https://gist.github.com/arunoda/7790979)
+- **Virtualbox**: `>= v6.1.0`, download [here](https://www.virtualbox.org/wiki/Downloads)
 
 ## Run locally
 
@@ -73,21 +75,45 @@ git clone https://github.com/HCMUS-Project-Org/openflow-sdn.git
 
 Auto download, run and config `Mininet VM`
 
+> In `mininet_setup.sh`, it's automatic:
+>
+> - Set **Port Forwarding** for SSH with `Host Port: 2222` and `Guest Port: 22`
+> - Add virtual machine to `Known Hosts`
+> - Copy `l2_pairs.py` file to Mininet machine
+
 ```bash
 bash ./mininet_setup.sh
 ```
 
-Connect to Mininet VM with <mininet-ip>
+Connect to Mininet VM (with `-X` flag for X11 forwarding)
+
+> Mininet default account:
+>
+> - **Username**: `mininet`
+> - **Password**: `mininet`
 
 ```bash
-ssh -l mininet <mininet-ip> -X
+sshpass -p "mininet" ssh mininet@localhost -p 2222 -X
 ```
 
-Install `Linear topology` with 4 Switch in Mininet
+```bash
+Welcome to Ubuntu 20.04.1 LTS (GNU/Linux 5.4.0-42-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+New release '22.04.3 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+Last login: Wed Feb 10 21:03:31 2021
+mininet@mininet-vm:~$
+```
+
+Install **`Linear topology`** with `4 Switch` in Mininet machine
 
 ```bash
-sudo -E mn --controller=remote,ip=127.0.0.1 --mac -i 10.1.1.0/24
---switch=ovsk --topo=linear,4
+sudo -E mn --controller=remote,ip=127.0.0.1 --mac -i 10.1.1.0/24 --switch=ovsk --topo=linear,4
 ```
 
 ```text
@@ -133,7 +159,7 @@ INFO:info.packet_dump:Packet dumper running
 [openflow.of_01] [00-00-00-00-00-02 5] connected
 ```
 
-`h1` ping `h2`
+In `Mininet` machine run `h1` ping `h2`
 
 ```bash
 h1 ping h2 -c 1
@@ -147,7 +173,7 @@ PING 10.1.1.2 (10.1.1.2) 56(84) bytes of data.
 rtt min/avg/max/mdev = 10.675/10.675/10.675/0.000 ms
 ```
 
-Watch Controller's logs
+Watch `POX` controller's logs
 
 ```bash
 sudo ~/pox/pox.py forwarding.l2_pairs info.packet_dump samples.pretty_log log.level --DEBUG
@@ -272,5 +298,3 @@ Distributed under the MIT License. See <a href="./LICENSE">`LICENSE`</a> for mor
 
 > Bento [@quanblue](https://bento.me/quanblue) &nbsp;&middot;&nbsp;
 > GitHub [@QuanBlue](https://github.com/QuanBlue) &nbsp;&middot;&nbsp; Gmail quannguyenthanh558@gmail.com
-
-https://courses.ctda.hcmus.edu.vn/mod/assign/view.php?id=45698
