@@ -58,7 +58,7 @@ This project with aim to learn **SDN** using `Linear topology` with **`OpenFlow`
 
 > **Linear topology:** each switch has one host
 >
-> <img alt="Linear topology" src="assets/linear-topo.png" width="450px">
+> <img alt="Linear topology" src="./assets/linear-topo.png" width="450px">
 
 ## Prerequisites
 
